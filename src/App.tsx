@@ -238,7 +238,7 @@ const Projects = () => {
               <img
                 alt="ACE Medical Center Billing"
                 className="w-full h-full object-cover grayscale opacity-60 group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-                src="billing.png"
+                src={`${import.meta.env.BASE_URL}billing.png`}
               />
             </div>
             <div className="p-8">
@@ -275,7 +275,7 @@ const Projects = () => {
               <img
                 alt="Veterinary System"
                 className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-                src="vet.png"
+                src={`${import.meta.env.BASE_URL}vet.png`}
               />
             </div>
             <div className="p-8">
@@ -391,7 +391,7 @@ const About = () => {
               <img
                 alt="CARL ANGELO SUPAN"
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
-                src="/profile.jpg"
+                src={`${import.meta.env.BASE_URL}profile.jpg`}
                 referrerPolicy="no-referrer"
               />
               <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background to-transparent">
