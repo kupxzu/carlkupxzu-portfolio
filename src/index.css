@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-headline: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-label: "Space Grotesk", ui-monospace, SFMono-Regular, monospace;
+
+  --color-surface: #0e0e0e;
+  --color-surface-container: #191919;
+  --color-surface-container-low: #131313;
+  --color-surface-container-high: #1f1f1f;
+  --color-surface-container-highest: #262626;
+  --color-surface-container-lowest: #000000;
+  --color-primary: #81ecff;
+  --color-primary-dim: #00d4ec;
+  --color-on-primary: #005762;
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #ababab;
+  --color-outline-variant: #484848;
+  --color-tertiary-container: #599cf9;
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary overflow-x-hidden;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 20px rgba(129, 236, 255, 0.3);
+  }
+  .bg-noise {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCL2nk7MqkwKfJlFHbc8msfpac0lvMbIWo3JC3JVjRzyQg9qlQXUpWfAJpjYvuxzhgCe5n8lFnLOKTcN5BR04bzOXZ-NmiJX5SAVhAM4nKITQQP_hD1qqRIuIfEYbicG6ll6hO8aDcyhveV0ZhnhR0YM-AwgJ07YCZuFS8wliFySh0TFqWPfWbGwPbPYD1babXGteclW9eDlimwnioOJjcO6EBStD54y_opoRA6Z0hm6YxJvCNFHuFqBLMzmWcy9als-Nvy7C3OVeQ);
+    opacity: 0.03;
+  }
+  .kinetic-blur {
+    backdrop-filter: blur(20px);
+  }
+}
