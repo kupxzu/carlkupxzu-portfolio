@@ -711,13 +711,59 @@ const Contact = () => {
 };
 
 const Footer = () => {
+  const [showChickenPenguin, setShowChickenPenguin] = useState(false);
+
   return (
-    <footer className="bg-[#0e0e0e] w-full py-16 px-8 border-t border-primary/5">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-        <div>
-          <div className="text-2xl font-bold text-white font-headline mb-2">KUPXZU THE CHICKEN PENGUIN -.-</div>
-          <p className="font-label text-[0.75rem] uppercase tracking-widest text-on-surface-variant">© 2026 KUPXZU. ALL RIGHTS RESERVED.</p>
-        </div>
+    <>
+      {/* Chicken Penguin Modal */}
+      <AnimatePresence>
+        {showChickenPenguin && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm cursor-pointer"
+            onClick={() => setShowChickenPenguin(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative bg-[#f5f5f0] p-4 rounded-2xl shadow-2xl max-w-sm mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowChickenPenguin(false)}
+                className="absolute -top-3 -right-3 bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors"
+              >
+                <X size={16} />
+              </button>
+              <img
+                src={`${import.meta.env.BASE_URL}chickpeng.jpg`}
+                alt="Chicken Penguin Art"
+                className="w-full h-auto rounded-lg"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <footer className="bg-[#0e0e0e] w-full py-16 px-8 border-t border-primary/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+          <div>
+            <div className="text-2xl font-bold text-white font-headline mb-2">
+              KUPXZU THE{' '}
+              <span 
+                onClick={() => setShowChickenPenguin(true)}
+                className="cursor-pointer text-purple-500 hover:text-purple-400 transition-colors underline decoration-2 underline-offset-4"
+              >
+                CHICKEN.PENGUIN
+              </span>
+              {' '}-.-
+            </div>
+            <p className="font-label text-[0.75rem] uppercase tracking-widest text-on-surface-variant">© 2026 KUPXZU. ALL RIGHTS RESERVED.</p>
+          </div>
         <div className="flex space-x-8 font-label text-[0.75rem] uppercase tracking-widest">
           <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="#"><Twitter size={16} /></a>
           <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="#"><Github size={16} /></a>
@@ -726,6 +772,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+    </>
   );
 };
 
