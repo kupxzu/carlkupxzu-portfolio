@@ -395,7 +395,7 @@ const About = () => {
                 referrerPolicy="no-referrer"
               />
               <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background to-transparent">
-                <span className="font-label text-primary text-xs tracking-widest uppercase">Lead Systems Architect</span>
+                <span className="font-label text-primary text-xs tracking-widest uppercase">FULL-STACK DEVELOPER</span>
                 <h2 className="font-headline text-2xl font-bold mt-1">CARL ANGELO SUPAN</h2>
               </div>
             </div>
@@ -715,7 +715,7 @@ const Footer = () => {
     <footer className="bg-[#0e0e0e] w-full py-16 px-8 border-t border-primary/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <div>
-          <div className="text-2xl font-bold text-white font-headline mb-2">KUPXZU</div>
+          <div className="text-2xl font-bold text-white font-headline mb-2">KUPXZU THE CHICKEN PENGUIN -.-</div>
           <p className="font-label text-[0.75rem] uppercase tracking-widest text-on-surface-variant">© 2026 KUPXZU. ALL RIGHTS RESERVED.</p>
         </div>
         <div className="flex space-x-8 font-label text-[0.75rem] uppercase tracking-widest">
