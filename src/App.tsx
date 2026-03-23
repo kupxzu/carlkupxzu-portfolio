@@ -729,7 +729,7 @@ const Footer = () => {
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm cursor-pointer"
             onClick={() => setShowChickenPenguin(false)}
           >
-            <motion.div
+<motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
@@ -739,15 +739,26 @@ const Footer = () => {
             >
               <button
                 onClick={() => setShowChickenPenguin(false)}
-                className="absolute -top-3 -right-3 bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors"
+                className="absolute -top-3 -right-3 bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors z-10"
               >
                 <X size={16} />
               </button>
+              
               <img
                 src={`${import.meta.env.BASE_URL}chickpeng.jpg`}
                 alt="Chicken Penguin Art"
-                className="w-full h-auto rounded-lg"
+                className="w-full h-auto rounded-lg shadow-inner"
               />
+
+              {/* Caption Section */}
+              <div className="mt-4 text-center">
+                <p className="text-gray-800 font-medium italic">
+                  "The Little Chicken Penguin"
+                </p>
+                <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+                  Inspired by my pet chick who refuses to walk like a bird and insists on waddling like a penguin.
+                </p>
+              </div>
             </motion.div>
           </motion.div>
         )}
