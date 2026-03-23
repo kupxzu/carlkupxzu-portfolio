@@ -19,9 +19,9 @@ import {
   Github,
   Twitter,
   Linkedin,
-  Dribbble,
+  Facebook,
   Database,
-  Cpu
+  Cpu,
 } from 'lucide-react';
 
 // --- Components ---
@@ -149,18 +149,18 @@ const Hero = () => {
           {/* Status Badge */}
           <div className="mb-6 inline-flex items-center space-x-3 bg-surface-container-high px-4 py-2 rounded-full border border-primary/20">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-            <span className="font-label text-xs uppercase tracking-[0.2em] text-primary">Tuguegarao Node Active</span>
+            <span className="font-label text-xs uppercase tracking-[0.2em] text-primary ">hello world
+            </span>
           </div>
 
           {/* Headline */}
           <h1 className="font-headline font-extrabold text-5xl md:text-8xl leading-[0.9] tracking-tighter text-white mb-8 text-glow">
-            ENGINEERING <br/> <span className="text-primary">SCALABLE</span> <br/> ARCHITECTURES
+            BUILDING <br/> <span className="text-primary">RELIABLE</span> <br/> SYSTEMS
           </h1>
 
           {/* Narrative */}
           <p className="text-on-surface-variant text-xl md:text-2xl max-w-2xl leading-relaxed mb-10 font-body">
-            Full-stack engineer at <span className="text-on-surface font-semibold">ACE Medical Center</span>. 
-            3 years of crafting high-performance systems and currently evolving through 
+            I&apos;m a full-stack developer with 3 years of crafting high-performance systems and currently evolving through 
             <span className="text-primary italic"> Data Science & Machine Learning.</span>
           </p>
 
@@ -219,12 +219,12 @@ const Projects = () => {
         <header className="mb-20 md:ml-[10%]">
           <span className="font-label text-primary text-[0.75rem] uppercase tracking-widest mb-4 block">Deployed Systems</span>
           <h2 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-none text-white max-w-4xl uppercase">
-            Mission Critical <span className="text-primary italic">Architectures</span> Built for Scale.
+            Practical <span className="text-primary italic">Systems</span> Built to Grow.
           </h2>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {/* 1. ACE Medical Center: Admitting & Billing */}
+          {/* 1. Hospital: Admitting & Billing */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -236,7 +236,7 @@ const Projects = () => {
               {/* Representative Visual for Billing System */}
               <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#81ecff_1px,transparent_1px)] [background-size:30px_30px]"></div>
               <img
-                alt="ACE Medical Center Billing"
+                alt="Hospital Billing Platform"
                 className="w-full h-full object-cover grayscale opacity-60 group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
                 src={`${import.meta.env.BASE_URL}billing.png`}
               />
@@ -245,7 +245,7 @@ const Projects = () => {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <span className="font-label text-[0.65rem] text-primary uppercase tracking-widest">Enterprise / Healthcare</span>
-                  <h3 className="font-headline text-3xl font-bold text-white tracking-tight mt-1">ACE Billing & Admitting</h3>
+                  <h3 className="font-headline text-3xl font-bold text-white tracking-tight mt-1">Billing & Admitting Platform</h3>
                 </div>
                 <Zap className="text-primary group-hover:rotate-45 transition-transform" size={28} />
               </div>
@@ -372,7 +372,8 @@ const About = () => {
     'LARAVEL',
     'FASTAPI',
     'INERTIA',
-    'DOCKER'
+    'DOCKER',
+    'FLUTTER',
   ];
   return (
     <section className="py-32 overflow-x-hidden" id="about">
@@ -405,11 +406,11 @@ const About = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center gap-8">
                     <span className="font-label text-[0.65rem] text-on-surface-variant uppercase">Experience</span>
-                    <span className="font-label text-[0.65rem] text-primary">1.2+ Years</span>
+                    <span className="font-label text-[0.65rem] text-primary">3+ Years</span>
                   </div>
                   <div className="flex justify-between items-center gap-8">
                     <span className="font-label text-[0.65rem] text-on-surface-variant uppercase">Location</span>
-                    <span className="font-label text-[0.65rem] text-primary">ACE MEDICAL TUGUEGARAO</span>
+                    <span className="font-label text-[0.65rem] text-primary">TUGUEGARAO CITY, PH</span>
                   </div>
                 </div>
               </div>
@@ -425,15 +426,15 @@ const About = () => {
             className="lg:col-span-7 space-y-8"
           >
             <div className="space-y-2">
-              <span className="font-label text-primary tracking-[0.4em] uppercase text-xs">Origin Story</span>
+              <span className="font-label text-primary tracking-[0.4em] uppercase text-xs">My Journey</span>
               <h2 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter leading-none">
-                Building <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary-container">Intelligent</span> Infrastructure.
+                Building <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary-container">Reliable</span> Digital Solutions.
               </h2>
             </div>
 
             <div className="space-y-6 text-on-surface-variant text-lg leading-relaxed max-w-2xl">
               <p>
-                Currently driving both <span className="text-on-surface font-semibold">operational and technical</span> excellence at ACE Medical Center. I specialize in transforming complex healthcare workflows into seamless digital systems, ensuring structural integrity from the database to the interface.
+                I focus on both <span className="text-on-surface font-semibold">operational and technical</span> excellence as a full-stack developer, transforming complex workflows into seamless digital systems with solid architecture from the database to the interface.
               </p>
               <p>
                 With three years of experience building full-stack web applications, I’ve moved beyond simple CRUD apps to architecting mission-critical tools like hospital billing systems and management platforms.
@@ -517,8 +518,11 @@ const About = () => {
               <Terminal size={120} />
             </div>
             <span className="font-label text-primary text-xs uppercase tracking-[0.3em]">2023 - Present</span>
-            <h4 className="font-headline text-2xl font-bold mt-4 mb-2">Full-Stack Web Developer</h4>
-            <p className="text-on-surface-variant font-label text-sm mb-6 uppercase tracking-wider">Freelance / Contract</p>
+            <h4 className="font-headline text-2xl font-bold mt-4 mb-2">Full-Stack Web/App Developer</h4>
+            <p className="text-on-surface-variant font-label text-sm uppercase tracking-wider">Work Experience</p>
+            <p className="text-on-surface-variant font-label text-xs mb-6 uppercase tracking-wider">
+              Current Workplace: ACE Medical Center Tuguegarao • Location: Tuguegarao City, PH
+            </p>
             <p className="text-on-surface-variant leading-relaxed max-w-lg">
               Specializing in robust enterprise solutions. Engineered a comprehensive **Hospital Billing Application** using
               Laravel and React, and developed specialized management systems for the medical and veterinary sectors.
@@ -765,10 +769,10 @@ const Footer = () => {
             <p className="font-label text-[0.75rem] uppercase tracking-widest text-on-surface-variant">© 2026 KUPXZU. ALL RIGHTS RESERVED.</p>
           </div>
         <div className="flex space-x-8 font-label text-[0.75rem] uppercase tracking-widest">
-          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="#"><Twitter size={16} /></a>
-          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="#"><Github size={16} /></a>
-          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="#"><Linkedin size={16} /></a>
-          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="#"><Dribbble size={16} /></a>
+          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://x.com/yanagi_ri"><Twitter size={16} /></a>
+          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://github.com/kupxzu"><Github size={16} /></a>
+          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://www.linkedin.com/in/carl-angelo-supan-b733a5193"><Linkedin size={16} /></a>
+          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://www.facebook.com/carl.sisu/"><Facebook size={16} /></a>
         </div>
       </div>
     </footer>
