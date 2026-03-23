@@ -729,7 +729,7 @@ const Footer = () => {
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm cursor-pointer"
             onClick={() => setShowChickenPenguin(false)}
           >
-<motion.div
+              <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
@@ -756,7 +756,7 @@ const Footer = () => {
                   "The Little Chicken Penguin"
                 </p>
                 <p className="text-sm text-gray-600 mt-1 leading-relaxed">
-                  Inspired by my pet chick who refuses to walk like a bird and insists on waddling like a penguin.
+                  Inspired by my pet chick who refuses to walk like a bird and insists on waddling like a penguin. So I drew this little adorable creature to honor his unique strut.
                 </p>
               </div>
             </motion.div>
