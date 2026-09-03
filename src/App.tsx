@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -10,7 +5,6 @@ import {
   ArrowUpRight,
   Download,
   Send,
-
   Terminal,
   Code,
   Zap,
@@ -23,6 +17,20 @@ import {
   Database,
   Cpu,
 } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Custom Map Marker styling using Tailwind CSS
+const customMapIcon = L.divIcon({
+  className: 'custom-map-marker',
+  html: `<div class="relative flex items-center justify-center">
+          <div class="absolute w-10 h-10 bg-primary/30 rounded-full animate-ping"></div>
+          <div class="w-4 h-4 bg-primary rounded-full border-2 border-white shadow-[0_0_15px_#81ecff] relative z-10"></div>
+         </div>`,
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+});
 
 // --- Components ---
 
@@ -63,7 +71,7 @@ const Navbar = () => {
 
         <div className="flex items-center space-x-4">
           <a className="hidden sm:block bg-primary text-on-primary px-6 py-2 rounded-md font-headline font-bold text-sm tracking-tight hover:shadow-[0_0_20px_rgba(129,236,255,0.4)] transition-all active:scale-95 duration-200" href="#contact">
-            Let's Talk
+            Click Me
           </a>
           <button
             className="md:hidden text-white"
@@ -95,7 +103,7 @@ const Navbar = () => {
                 </a>
               ))}
               <a className="bg-primary text-on-primary px-6 py-4 rounded-md text-center" href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
-                Let's Talk
+                Click Me
               </a>
             </div>
           </motion.div>
@@ -110,8 +118,9 @@ const Hero = () => {
   name = "carl angelo supan";
   location = "Tuguegarao City";
   exp = "3 Years";
-  specialty = ["Inertia", "Laravel", "Django"];
-  focus = "Data Science & ML";
+  specialty = ["Inertia", "Laravel", "Django", 
+  "TensorFlow" ,"GIT - CI/CD"];
+  focus = "Machine Learning";
   
   status() {
     return "Optimizing systems...";
@@ -137,9 +146,9 @@ const Hero = () => {
       <div className="absolute inset-0 bg-noise pointer-events-none opacity-20"></div>
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
       <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-tertiary-container/5 rounded-full blur-[150px]"></div>
-      
+
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
@@ -155,13 +164,13 @@ const Hero = () => {
 
           {/* Headline */}
           <h1 className="font-headline font-extrabold text-5xl md:text-8xl leading-[0.9] tracking-tighter text-white mb-8 text-glow">
-            BUILDING <br/> <span className="text-primary">RELIABLE</span> <br/> SYSTEMS
+            BUILDING <br /> <span className="text-primary">RELIABLE</span> <br /> SYSTEMS
           </h1>
 
           {/* Narrative */}
           <p className="text-on-surface-variant text-xl md:text-2xl max-w-2xl leading-relaxed mb-10 font-body">
-            I&apos;m a full-stack developer with 3 years of crafting high-performance systems and currently evolving through 
-            <span className="text-primary italic"> Data Science & Machine Learning.</span>
+            I&apos;m a full-stack developer with 3 years of crafting high-performance systems and currently evolving through
+            <span className="text-primary italic"> Machine Learning.</span>
           </p>
 
           {/* Action Row */}
@@ -177,7 +186,7 @@ const Hero = () => {
         </motion.div>
 
         {/* Technical Side Card */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
@@ -194,14 +203,14 @@ const Hero = () => {
             </div>
 
             <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent"></div>
-            
+
             <div className="absolute bottom-8 left-8 right-8">
               <div className="flex items-center gap-2 mb-2">
                 <Terminal size={14} className="text-primary" />
                 <span className="font-label text-[0.65rem] text-primary tracking-widest uppercase">System Terminal</span>
               </div>
               <div className="h-[1px] w-full bg-primary/20 mb-4"></div>
-              <p className="font-headline text-white font-bold leading-tight uppercase">Full-Stack Operational Engineering</p>
+              <p className="font-headline text-white font-bold leading-tight uppercase">Full-Stack Developer</p>
             </div>
           </div>
         </motion.div>
@@ -310,14 +319,13 @@ const Projects = () => {
                 <div className="flex justify-between items-start mb-6">
                   <Database className="text-primary" size={32} />
                   <div className="flex gap-2">
+                    <span className="text-[10px] text-on-surface-variant border border-white/10 px-2 py-1">LARAVEL</span>
                     <span className="text-[10px] text-on-surface-variant border border-white/10 px-2 py-1">DJANGO</span>
-                    <span className="text-[10px] text-on-surface-variant border border-white/10 px-2 py-1">FASTAPI</span>
                   </div>
                 </div>
-                <h3 className="font-headline text-2xl font-bold text-white mb-4">API Ecosystems</h3>
+                <h3 className="font-headline text-2xl font-bold text-white mb-4">Backend & APIs</h3>
                 <p className="text-on-surface-variant text-sm leading-relaxed mb-8">
-                  Development of high-concurrency backends using **Django** and **FastAPI**. Specialized in
-                  integrating machine learning models into production-ready web interfaces.
+                  Building fast, reliable backends and REST APIs using **Laravel** and **Django**. Specialized in connecting databases, web apps, and mobile frontends smoothly.
                 </p>
               </div>
               <button className="text-primary font-label text-[10px] uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all">
@@ -338,14 +346,20 @@ const Projects = () => {
               SELECT * FROM core_systems;
             </div>
             <h3 className="font-headline text-xl font-bold text-white mb-4">Core Runtime Development</h3>
-            <p className="text-on-surface-variant text-sm max-w-lg mb-6 leading-relaxed">
-              Deep experience in **Vanilla PHP** and custom PDO database wrappers for lightweight,
-              high-performance applications where framework overhead is a bottleneck.
-            </p>
-            <div className="flex gap-4">
-              <div className="text-primary font-mono text-xs">01 // VANILLA PHP</div>
-              <div className="text-primary font-mono text-xs">02 // PDO SECURITY</div>
-              <div className="text-primary font-mono text-xs">03 // RAW SQL</div>
+            <div>
+              <span className="font-label text-primary text-xs uppercase tracking-widest block mb-2">
+                Core Runtimes & Languages
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {['NODE.JS', 'RUST', 'PHP', 'PYTHON', 'TYPESCRIPT'].map((tech) => (
+                  <span
+                    key={tech}
+                    className="text-primary font-mono text-xs bg-primary/10 border border-primary/20 px-2.5 py-1 rounded"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>
@@ -367,13 +381,16 @@ const About = () => {
     'TYPESCRIPT',
     'TAILWIND CSS',
     'SHADCN',
-    'NODE.JS / RUST',
+    'NODE.JS',
     'DJANGO',
     'LARAVEL',
-    'FASTAPI',
     'INERTIA',
     'DOCKER',
     'FLUTTER',
+    'GIT - CI/CD',
+    'EXPRESS',
+    'TENSORFLOW'
+
   ];
   return (
     <section className="py-32 overflow-x-hidden" id="about">
@@ -397,7 +414,7 @@ const About = () => {
               />
               <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background to-transparent">
                 <span className="font-label text-primary text-xs tracking-widest uppercase">FULL-STACK DEVELOPER</span>
-                <h2 className="font-headline text-2xl font-bold mt-1">CARL ANGELO SUPAN</h2>
+                <h2 className="font-headline text-2xl font-bold mt-1">C.A SUPAN (CAS)</h2>
               </div>
             </div>
 
@@ -428,19 +445,18 @@ const About = () => {
             <div className="space-y-2">
               <span className="font-label text-primary tracking-[0.4em] uppercase text-xs">My Journey</span>
               <h2 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter leading-none">
-                Building <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary-container">Reliable</span> Digital Solutions.
+                Building <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary-container">Solid</span> Apps & Web Systems.
               </h2>
             </div>
-
             <div className="space-y-6 text-on-surface-variant text-lg leading-relaxed max-w-2xl">
               <p>
-                I focus on both <span className="text-on-surface font-semibold">operational and technical</span> excellence as a full-stack developer, transforming complex workflows into seamless digital systems with solid architecture from the database to the interface.
+                I&apos;m a full-stack developer who loves turning complex business problems into clean, easy-to-use web and mobile applications. I focus on making things run smoothly from the database back-end all the way to the user interface.
               </p>
               <p>
-                With three years of experience building full-stack web applications, I’ve moved beyond simple CRUD apps to architecting mission-critical tools like hospital billing systems and management platforms.
+                Over the past three years, I&apos;ve built practical tools and real-world platforms, including hospital billing systems and management software that real people rely on daily.
               </p>
               <p>
-                My current focus is expanding into <span className="text-on-surface font-semibold italic">Data Science and Machine Learning</span>—leveraging data to build more predictive, intelligent applications that solve real-world operational bottlenecks.
+                Right now, I&apos;m learning and diving deeper into <span className="text-on-surface font-semibold italic">Machine Learning</span>—exploring how to make smarter apps that can automate tasks and solve everyday problems.
               </p>
             </div>
 
@@ -451,7 +467,7 @@ const About = () => {
               </button>
               <div className="flex items-center gap-2 px-4 py-3">
                 <span className="h-2 w-2 rounded-full bg-primary animate-pulse"></span>
-                <span className="text-xs font-label uppercase tracking-widest opacity-70">Learning: ML & Data Science</span>
+                <span className="text-xs font-label uppercase tracking-widest opacity-70">Active</span>
               </div>
             </div>
           </motion.div>
@@ -499,123 +515,26 @@ const About = () => {
           </div>
         </div>
 
-        {/* Experience */}
-        <div className="mb-16">
-          <span className="font-label text-primary tracking-widest uppercase text-xs">The Journey</span>
-          <h3 className="font-headline text-4xl font-bold tracking-tight mt-2">Experience Milestone</h3>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Main Role - Full Stack Development */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="md:col-span-2 bg-surface-container p-10 rounded-xl relative overflow-hidden group border border-white/5"
-          >
-            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-              <Terminal size={120} />
-            </div>
-            <span className="font-label text-primary text-xs uppercase tracking-[0.3em]">2023 - Present</span>
-            <h4 className="font-headline text-2xl font-bold mt-4 mb-2">Full-Stack Web/App Developer</h4>
-            <p className="text-on-surface-variant font-label text-sm uppercase tracking-wider">Work Experience</p>
-            <p className="text-on-surface-variant font-label text-xs mb-6 uppercase tracking-wider">
-              Current Workplace: ACE Medical Center Tuguegarao • Location: Tuguegarao City, PH
-            </p>
-            <p className="text-on-surface-variant leading-relaxed max-w-lg">
-              Specializing in robust enterprise solutions. Engineered a comprehensive **Hospital Billing Application** using
-              Laravel and React, and developed specialized management systems for the medical and veterinary sectors.
-            </p>
-          </motion.div>
-
-          {/* Desktop & Tooling Experience */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            viewport={{ once: true }}
-            className="bg-surface-container-high p-8 rounded-xl border border-white/5 hover:border-primary/30 transition-colors"
-          >
-            <span className="font-label text-primary text-xs uppercase tracking-[0.3em]">Development Stack</span>
-            <h4 className="font-headline text-xl font-bold mt-4 mb-2">Systems Integration</h4>
-            <div className="space-y-4">
-              <h5 className="text-sm font-bold uppercase tracking-tighter text-primary">Hybrid Ecosystem Expert</h5>
-              <p className="text-on-surface-variant text-sm leading-relaxed">
-                Expert at architecting <span className="text-on-surface font-semibold">Native Desktop Solutions</span> by embedding
-                <span className="text-primary font-mono"> PHP/Laravel </span> runtimes within <span className="text-on-surface font-semibold">Electron</span>.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-xs text-on-surface-variant">
-                  <div className="h-1 w-1 bg-primary rounded-full" />
-                  <span>High-performance <span className="text-on-surface">Django & Laravel</span> REST APIs</span>
-                </li>
-                <li className="flex items-center gap-2 text-xs text-on-surface-variant">
-                  <div className="h-1 w-1 bg-primary rounded-full" />
-                  <span>Vanilla PHP & PDO for lean, legacy-free database management</span>
-                </li>
-                <li className="flex items-center gap-2 text-xs text-on-surface-variant">
-                  <div className="h-1 w-1 bg-primary rounded-full" />
-                  <span>Containerized workflows with <span className="text-on-surface">Docker & FastAPI</span></span>
-                </li>
-              </ul>
-            </div>
-          </motion.div>
-
-          {/* Stats / Years of Experience */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="bg-surface-container-low p-8 rounded-xl flex flex-col justify-between border-t-2 border-primary/40"
-          >
-            <div>
-              <Code className="text-primary mb-4" size={24} />
-              <h4 className="font-headline text-lg font-bold">3+ Years</h4>
-              <p className="text-on-surface-variant text-sm">Professional Development</p>
-            </div>
-            <div className="mt-4">
-              <span className="font-label text-[0.65rem] text-on-surface-variant uppercase tracking-widest">Full-Stack Expertise</span>
-            </div>
-          </motion.div>
-
-          {/* Open Source / Community */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="md:col-span-2 bg-[#131313] p-10 rounded-xl flex items-center justify-between border-l-4 border-primary"
-          >
-            <div className="max-w-md">
-              <h4 className="font-headline text-xl font-bold mb-2">Modular Architect</h4>
-              <p className="text-on-surface-variant text-sm">
-                Focused on building scalable APIs and reusable frontend components. From **Laravel API** architecture
-                to interactive **React** interfaces and game development in Javascript.
-              </p>
-            </div>
-            <div className="hidden sm:block">
-              <Cpu className="text-primary/40" size={48} />
-            </div>
-          </motion.div>
-        </div>
       </div>
     </section>
   );
 };
 
 const Contact = () => {
+  // Tuguegarao City Coordinates
+  const position: [number, number] = [17.6132, 121.7270];
+
   return (
     <section className="py-32 px-8 bg-surface-container-low" id="contact">
       <div className="max-w-7xl mx-auto">
         <header className="mb-20">
-          <span className="font-label text-primary tracking-[0.3em] text-[0.75rem] uppercase mb-4 block">Initialization</span>
+          <span className="font-label text-primary tracking-[0.3em] text-[0.75rem] uppercase mb-4 block">Collaborate</span>
           <h2 className="font-headline text-[3.5rem] md:text-7xl font-bold leading-[1.1] tracking-tighter text-white mb-6 max-w-3xl">
-            Let's build the next <span className="text-primary">Project</span> together. 
+            Let's work on a <span className="text-primary">project</span> together.
           </h2>
           <p className="text-on-surface-variant text-lg max-w-xl leading-relaxed">
-            Reach out for collaborations, project inquiries, or technical consultations. High-frequency responses guaranteed.
+            Got an idea, a question, or a project in mind? Drop me a message and I'll get back to you soon.
           </p>
         </header>
 
@@ -631,23 +550,23 @@ const Contact = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
             <form className="space-y-8 relative z-10" onSubmit={(e) => e.preventDefault()}>
               <div className="group">
-                <label className="font-label text-[0.7rem] uppercase tracking-widest text-on-surface-variant block mb-2 group-focus-within:text-primary transition-colors">Identification / Name</label>
+                <label className="font-label text-[0.7rem] uppercase tracking-widest text-on-surface-variant block mb-2 group-focus-within:text-primary transition-colors">Name</label>
                 <input className="w-full bg-transparent border-none p-4 text-on-surface focus:ring-0 placeholder:text-outline/40 font-body transition-all" placeholder="Enter your name" type="text" />
                 <div className="h-[1px] w-full bg-outline-variant group-focus-within:bg-primary transition-all duration-500"></div>
               </div>
               <div className="group">
-                <label className="font-label text-[0.7rem] uppercase tracking-widest text-on-surface-variant block mb-2 group-focus-within:text-primary transition-colors">Channel / Email</label>
+                <label className="font-label text-[0.7rem] uppercase tracking-widest text-on-surface-variant block mb-2 group-focus-within:text-primary transition-colors">Email</label>
                 <input className="w-full bg-transparent border-none p-4 text-on-surface focus:ring-0 placeholder:text-outline/40 font-body transition-all" placeholder="email@example.com" type="email" />
                 <div className="h-[1px] w-full bg-outline-variant group-focus-within:bg-primary transition-all duration-500"></div>
               </div>
               <div className="group">
-                <label className="font-label text-[0.7rem] uppercase tracking-widest text-on-surface-variant block mb-2 group-focus-within:text-primary transition-colors">Transmission / Message</label>
+                <label className="font-label text-[0.7rem] uppercase tracking-widest text-on-surface-variant block mb-2 group-focus-within:text-primary transition-colors">Message</label>
                 <textarea className="w-full bg-transparent border-none p-4 text-on-surface focus:ring-0 placeholder:text-outline/40 font-body transition-all resize-none" placeholder="Describe your project vision..." rows={5}></textarea>
                 <div className="h-[1px] w-full bg-outline-variant group-focus-within:bg-primary transition-all duration-500"></div>
               </div>
               <div className="pt-4">
                 <button className="w-full md:w-auto px-12 py-4 bg-primary text-on-primary font-headline font-extrabold text-sm uppercase tracking-widest rounded-md hover:bg-primary-dim transition-all flex items-center justify-center gap-3 active:scale-95 shadow-[0_0_30px_rgba(129,236,255,0.15)]" type="submit">
-                  Execute
+                  NOTIFY
                   <Send size={16} />
                 </button>
               </div>
@@ -676,35 +595,50 @@ const Contact = () => {
               <div className="group">
                 <span className="font-label text-primary text-[0.7rem] tracking-widest uppercase mb-4 block">Social Protocols</span>
                 <div className="flex flex-wrap gap-4 mt-2">
-                  {['LINKEDIN', 'GITHUB', 'INSTAGRAM'].map(social => (
-                    <a key={social} className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest font-label text-[0.75rem] text-on-surface tracking-wider transition-all border border-outline-variant/20" href="#">{social}</a>
+                  {[
+                    { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/carl-angelo-supan-b733a5193/' },
+                    { label: 'GITHUB', href: 'https://github.com/kupxzu/carlkupxzu-portfolio' },
+                    { label: 'FACEBOOK', href: 'https://www.facebook.com/null.arl/' },
+                  ].map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest font-label text-[0.75rem] text-on-surface tracking-wider transition-all border border-outline-variant/20"
+                    >
+                      {social.label}
+                    </a>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Map Representation */}
-            <div className="relative w-full h-64 bg-surface-container-lowest overflow-hidden group rounded-xl border border-white/5 shadow-inner">
-              <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#81ecff_1px,transparent_1px)] [background-size:20px_20px]"></div>
+            {/* Interactive Real Map Component */}
+            <div className="relative w-full h-64 overflow-hidden group rounded-xl border border-white/10 shadow-inner z-0">
+              <MapContainer
+                center={position}
+                zoom={13}
+                scrollWheelZoom={false}
+                className="w-full h-full z-0 grayscale contrast-125 brightness-75 hover:grayscale-0 hover:brightness-100 transition-all duration-500"
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={position} icon={customMapIcon}>
+                  <Popup>
+                    <div className="text-slate-900 font-bold font-mono text-xs">
+                      HERE I AM
+                    </div>
+                  </Popup>
+                </Marker>
+              </MapContainer>
 
-              {/* Visual Map Marker */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative">
-                  <div className="absolute inset-0 w-16 h-16 bg-primary/20 rounded-full -translate-x-1/2 -translate-y-1/2 animate-ping"></div>
-                  <div className="w-4 h-4 bg-primary rounded-full shadow-[0_0_20px_#81ecff] relative z-10 border-2 border-white"></div>
-                </div>
-              </div>
-
-              {/* Grid Pattern Overlay */}
-              <div className="absolute inset-0 pointer-events-none border-[1px] border-white/5 grid grid-cols-6 grid-rows-4">
-                {[...Array(24)].map((_, i) => (
-                  <div key={i} className="border-[0.5px] border-white/5"></div>
-                ))}
-              </div>
-
-              <div className="absolute bottom-4 left-4 font-label text-[0.6rem] text-primary/60 tracking-widest uppercase flex items-center gap-2">
+              {/* Status Overlay Badge */}
+              <div className="absolute bottom-4 left-4 z-[1000] font-label text-[0.6rem] text-primary tracking-widest uppercase flex items-center gap-2 bg-[#0e0e0e]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 pointer-events-none">
                 <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
-                Active Node: TUG_CENTRAL_078
+                HERE I AM
               </div>
             </div>
           </aside>
@@ -729,7 +663,7 @@ const Footer = () => {
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm cursor-pointer"
             onClick={() => setShowChickenPenguin(false)}
           >
-              <motion.div
+            <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
@@ -743,7 +677,7 @@ const Footer = () => {
               >
                 <X size={16} />
               </button>
-              
+
               <img
                 src={`${import.meta.env.BASE_URL}chickpeng.jpg`}
                 alt="Chicken Penguin Art"
@@ -769,7 +703,7 @@ const Footer = () => {
           <div>
             <div className="text-2xl font-bold text-white font-headline mb-2">
               KUPXZU THE{' '}
-              <span 
+              <span
                 onClick={() => setShowChickenPenguin(true)}
                 className="cursor-pointer text-purple-500 hover:text-purple-400 transition-colors underline decoration-2 underline-offset-4"
               >
@@ -779,14 +713,14 @@ const Footer = () => {
             </div>
             <p className="font-label text-[0.75rem] uppercase tracking-widest text-on-surface-variant">© 2026 KUPXZU. ALL RIGHTS RESERVED.</p>
           </div>
-        <div className="flex space-x-8 font-label text-[0.75rem] uppercase tracking-widest">
-          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://x.com/yanagi_ri"><Twitter size={16} /></a>
-          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://github.com/kupxzu"><Github size={16} /></a>
-          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://www.linkedin.com/in/carl-angelo-supan-b733a5193"><Linkedin size={16} /></a>
-          <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://www.facebook.com/carl.sisu/"><Facebook size={16} /></a>
+          <div className="flex space-x-8 font-label text-[0.75rem] uppercase tracking-widest">
+            <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://x.com/yanagi_ri"><Twitter size={16} /></a>
+            <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://github.com/kupxzu"><Github size={16} /></a>
+            <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://www.linkedin.com/in/carl-angelo-supan-b733a5193"><Linkedin size={16} /></a>
+            <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-y-[-2px] duration-200" href="https://www.facebook.com/null.arl/"><Facebook size={16} /></a>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
     </>
   );
 };
