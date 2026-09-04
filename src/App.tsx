@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import ScrollToTop from './ScrollToTop';
 import {
   ArrowRight,
   ArrowUpRight,
   Download,
   Send,
   Terminal,
-  Code,
+
   Zap,
   Menu,
   X,
@@ -15,7 +16,7 @@ import {
   Linkedin,
   Facebook,
   Database,
-  Cpu,
+
 } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -23,14 +24,32 @@ import L from 'leaflet';
 
 // Custom Map Marker styling using Tailwind CSS
 const customMapIcon = L.divIcon({
-  className: 'custom-map-marker',
-  html: `<div class="relative flex items-center justify-center">
-          <div class="absolute w-10 h-10 bg-primary/30 rounded-full animate-ping"></div>
-          <div class="w-4 h-4 bg-primary rounded-full border-2 border-white shadow-[0_0_15px_#81ecff] relative z-10"></div>
-         </div>`,
-  iconSize: [16, 16],
-  iconAnchor: [8, 8],
-});
+  className: 'custom-purple-marker',
+  html: `
+    <div class="relative flex items-center justify-center w-6 h-6">
+      <!-- Outer Purple Radar Ping -->
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#bd34fe] opacity-75"></span>
+      
+      <!-- Purple Glow Shadow -->
+      <span class="absolute w-4 h-4 rounded-full bg-[#bd34fe] blur-sm"></span>
+
+      <!-- Core Dot -->
+      <span class="relative inline-flex rounded-full h-3 w-3 bg-[#bd34fe] border-2 border-white shadow-lg"></span>
+    </div>
+  `,
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+}); 
+
+// Maps each Operational Stack tag to the project it powers.
+// Add/edit entries here to control which tags show a preview on hover.
+const stackProjects: Record<string, { title: string; image: string }> = {
+  'LARAVEL': { title: 'Billing & Admitting Platform', image: 'billing.png' },
+  'INERTIA': { title: 'Billing & Admitting Platform', image: 'billing.png' },
+  'REACT': { title: 'Billing & Admitting Platform', image: 'billing.png' },
+  'VUE': { title: 'Vet Management', image: 'vet.png' },
+  'DJANGO': { title: 'Backend & APIs', image: 'django.png' },
+};
 
 // --- Components ---
 
@@ -119,7 +138,7 @@ const Hero = () => {
   location = "Tuguegarao City";
   exp = "3 Years";
   specialty = ["Inertia", "Laravel", "Django", 
-  "TensorFlow" ,"GIT - CI/CD"];
+  "TensorFlow", "ROBOTICS-IOT" ,"GIT - CI/CD"];
   focus = "Machine Learning";
   
   status() {
@@ -343,7 +362,7 @@ const Projects = () => {
             className="md:col-span-7 bg-[#111] p-8 border border-white/5 flex flex-col justify-center relative group"
           >
             <div className="absolute top-0 right-0 p-4 opacity-5 font-mono text-xs">
-              SELECT * FROM core_systems;
+              SELECT * FROM carl supan;
             </div>
             <h3 className="font-headline text-xl font-bold text-white mb-4">Core Runtime Development</h3>
             <div>
@@ -351,7 +370,7 @@ const Projects = () => {
                 Core Runtimes & Languages
               </span>
               <div className="flex flex-wrap gap-2">
-                {['NODE.JS', 'RUST', 'PHP', 'PYTHON', 'TYPESCRIPT'].map((tech) => (
+                {['NODE.JS', 'RUST', 'PHP', 'PYTHON', 'TYPESCRIPT', 'C++'].map((tech) => (
                   <span
                     key={tech}
                     className="text-primary font-mono text-xs bg-primary/10 border border-primary/20 px-2.5 py-1 rounded"
@@ -389,11 +408,90 @@ const About = () => {
     'FLUTTER',
     'GIT - CI/CD',
     'EXPRESS',
+    'ROBOTICS-IOT',
     'TENSORFLOW'
-
   ];
+
+  // --- Hover-to-reveal project preview state/refs ---
+  
+const skillsGridRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const stackContainerRef = useRef<HTMLDivElement>(null);
+
+  const [hoveredItem, setHoveredItem] = useState<{ tech: string; x: number; y: number } | null>(null);
+  const [linePath, setLinePath] = useState<{
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+    bottomY: number;
+  } | null>(null);
+
+  const handleTagEnter = (e: React.MouseEvent<HTMLDivElement>, tech: string) => {
+    const itemRect = e.currentTarget.getBoundingClientRect();
+    const gridRect = skillsGridRef.current?.getBoundingClientRect();
+    if (!gridRect) return;
+
+    setHoveredItem({
+      tech,
+      // Kumuha sa gitna-ibaba ng mismong tag button
+      x: itemRect.left - gridRect.left + itemRect.width / 2,
+      y: itemRect.bottom - gridRect.top,
+    });
+  };
+
+useLayoutEffect(() => {
+    if (!hoveredItem || !skillsGridRef.current) {
+      setLinePath(null);
+      return;
+    }
+
+    const gridRect = skillsGridRef.current.getBoundingClientRect();
+
+    // Kuhanin ang pinaka-ibaba ng Operational Stack Grid para doon dumaan sa ilalim
+    let lineBottomY = hoveredItem.y + 40;
+    if (stackContainerRef.current) {
+      const stackRect = stackContainerRef.current.getBoundingClientRect();
+      lineBottomY = stackRect.bottom - gridRect.top + 20; // 20px allowance sa ilalim ng huling tag
+    }
+
+    if (modalRef.current) {
+      const modalRect = modalRef.current.getBoundingClientRect();
+
+      setLinePath({
+        // x1: CENTER ng Modal Card (Horizontal)
+        x1: modalRect.left - gridRect.left + modalRect.width / 2,
+        // y1: ILALIM ng Modal Card (Vertical)
+        y1: modalRect.bottom - gridRect.top,
+        // x2, y2: Gitna sa Ibaba ng Hovered Tag
+        x2: hoveredItem.x,
+        y2: hoveredItem.y,
+        bottomY: lineBottomY,
+      });
+    }
+  }, [hoveredItem]);
+
+
+// Helper para sa Rounded Corner Right-Angle Path
+const createRoundedPath = (x1: number, y1: number, x2: number, y2: number, bottomY: number) => {
+  const r = 12; // Radius ng kanto
+
+  // Direction checks
+  const hDir = x1 > x2 ? 1 : -1;
+
+  return `
+    M ${x2} ${y2}
+    V ${bottomY - r}
+    Q ${x2} ${bottomY}, ${x2 + hDir * r} ${bottomY}
+    H ${x1 - hDir * r}
+    Q ${x1} ${bottomY}, ${x1} ${bottomY - r}
+    V ${y1}
+  `.replace(/\s+/g, ' ').trim();
+};
+
+
   return (
-    <section className="py-32 overflow-x-hidden" id="about">
+<section className="py-32 overflow-x-hidden" id="about">
       <div className="max-w-7xl mx-auto px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center mb-32">
           {/* Profile Identity */}
@@ -473,15 +571,51 @@ const About = () => {
           </motion.div>
         </div>
 
-        {/* Skills */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-32">
+        {/* Skills & Operational Stack */}
+        <div ref={skillsGridRef} className="relative grid grid-cols-1 lg:grid-cols-12 gap-12 mb-32">
           <div className="lg:col-span-4">
-            <div className="sticky top-40 space-y-4">
-              <span className="font-label text-primary tracking-widest uppercase text-xs">Technical Arsenal</span>
-              <h3 className="font-headline text-4xl font-bold tracking-tight">System Capabilities</h3>
-              <p className="text-on-surface-variant font-body">A breakdown of my technical proficiency across the product lifecycle.</p>
-            </div>
+{/* Sticky container modal anchor */}
+<div className="sticky top-40 space-y-4">
+  <span className="font-label text-primary tracking-widest uppercase text-xs">Technical Arsenal</span>
+  <h3 className="font-headline text-4xl font-bold tracking-tight">System Capabilities</h3>
+  <p className="text-on-surface-variant font-body">A breakdown of my technical proficiency across the product lifecycle.</p>
+
+{/* Modal Anchor Container */}
+              <div className="relative mt-8 hidden lg:block min-h-[220px]">
+                <AnimatePresence>
+                  {hoveredItem && stackProjects[hoveredItem.tech] && (
+                    <motion.div
+                      key={hoveredItem.tech}
+                      ref={modalRef} /* <--- DITO ANG REF SA INNER CARD */
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-0 left-0 w-80 bg-surface-container-high border border-primary/30 rounded-xl overflow-hidden shadow-[0_0_30px_rgba(129,236,255,0.15)] z-20"
+                    >
+                      <div className="aspect-video w-full overflow-hidden relative">
+                        <img
+                          src={`${import.meta.env.BASE_URL}${stackProjects[hoveredItem.tech].image}`}
+                          alt={stackProjects[hoveredItem.tech].title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-surface-container-high via-transparent to-transparent"></div>
+                      </div>
+                      <div className="p-4">
+                        <span className="font-label text-[0.65rem] text-primary uppercase tracking-widest font-bold">
+                          Powered by {hoveredItem.tech}
+                        </span>
+                        <p className="font-headline text-base font-bold text-white mt-0.5">
+                          {stackProjects[hoveredItem.tech].title}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+</div>
           </div>
+
           <div className="lg:col-span-8 space-y-16">
             <div className="space-y-10">
               {skills.map(skill => (
@@ -502,25 +636,109 @@ const About = () => {
                 </div>
               ))}
             </div>
-            <div className="space-y-6">
-              <h4 className="font-label text-on-surface-variant text-xs uppercase tracking-widest border-l-2 border-primary pl-4">Operational Stack</h4>
-              <div className="flex flex-wrap gap-3">
-                {stack.map(item => (
-                  <div key={item} className="bg-surface-container-lowest border border-outline-variant/30 px-4 py-2 rounded-md font-label text-sm text-primary transition-all hover:border-primary/50 hover:bg-surface-container-highest">
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
 
-
+<div ref={stackContainerRef} className="space-y-6 relative z-20">
+  <h4 className="font-label text-on-surface-variant text-xs uppercase tracking-widest border-l-2 border-primary pl-4">
+    Operational Stack
+  </h4>
+  <div className="flex flex-wrap gap-3">
+    {stack.map(item => (
+      <div
+        key={item}
+        onMouseEnter={(e) => handleTagEnter(e, item)}
+        onMouseLeave={() => setHoveredItem(null)}
+        /* z-20 para lumutang ang button sa itaas ng SVG line (z-10) */
+        className="relative z-20 bg-surface-container-low border border-outline-variant/30 px-4 py-2 rounded-md font-label text-sm text-primary transition-all hover:border-primary/50 hover:bg-surface-container-highest cursor-pointer shadow-sm"
+      >
+        {item}
       </div>
-    </section>
-  );
-};
+    ))}
+  </div>
+</div>
+          </div>
 
+{/* Interactive SVG Connector Line */}
+{linePath && (() => {
+  const pathD = createRoundedPath(
+    linePath.x1,
+    linePath.y1,
+    linePath.x2,
+    linePath.y2,
+    linePath.bottomY
+  );
+
+  return (
+    <svg
+      className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none z-10"
+      style={{ overflow: 'visible' }}
+    >
+      <defs>
+        {/* Vite-Style Neon Glow Filter */}
+        <filter id="circuitGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      {/* 1. Base Dimmed Line (May Rounded Corners) */}
+      <path
+        d={pathD}
+        fill="none"
+        stroke="#81ecff"
+        strokeOpacity="0.2"
+        strokeWidth="2"
+      />
+
+      {/* 2. Vite Glow Trail Animation */}
+
+
+      {/* 3. Vite Pulse Leading Dot (Sumusunod sa mismong Rounded Path) */}
+      <motion.circle
+        r="4"
+        fill="#ffffff"
+        filter="url(#circuitGlow)"
+        style={{ offsetPath: `path('${pathD}')` }}
+        animate={{ offsetDistance: ["0%", "100%"] }}
+        transition={{
+          repeat: Infinity,
+          duration: 1.2,
+          ease: "linear",
+        }}
+      />
+
+      {/* Hovered Tag Anchor Dot */}
+      <circle
+        cx={linePath.x2}
+        cy={linePath.y2}
+        r="3.5"
+        fill="#81ecff"
+      />
+
+      {/* Target Modal Purple Center Dot */}
+      <circle
+        cx={linePath.x1}
+        cy={linePath.y1}
+        r="6"
+        fill="#bd34fe"
+        filter="url(#circuitGlow)"
+      />
+      <circle
+        cx={linePath.x1}
+        cy={linePath.y1}
+        r="3"
+        fill="#ffffff"
+      />
+    </svg>
+  );
+})()}
+  </div>
+        </div>
+      </section>
+    );
+  };
 const Contact = () => {
   // Tuguegarao City Coordinates
   const position: [number, number] = [17.6132, 121.7270];
@@ -636,10 +854,16 @@ const Contact = () => {
               </MapContainer>
 
               {/* Status Overlay Badge */}
-              <div className="absolute bottom-4 left-4 z-[1000] font-label text-[0.6rem] text-primary tracking-widest uppercase flex items-center gap-2 bg-[#0e0e0e]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 pointer-events-none">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
-                HERE I AM
-              </div>
+{/* Status Overlay Badge */}
+<div className="absolute bottom-4 left-4 z-[1000] font-label text-[0.6rem] text-purple-400 tracking-widest uppercase flex items-center gap-2 bg-[#0e0e0e]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-purple-500/30 pointer-events-none shadow-[0_0_15px_rgba(189,52,254,0.2)]">
+  <span className="relative flex h-2 w-2">
+    {/* Purple Outer Pulse Effect */}
+    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#bd34fe] opacity-75"></span>
+    {/* Purple Inner Core Dot */}
+    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#bd34fe]"></span>
+  </span>
+  HERE I AM
+</div>
             </div>
           </aside>
         </div>
@@ -729,13 +953,14 @@ const Footer = () => {
 
 export default function App() {
   return (
-    <div className="min-h-screen">
+<div className="relative min-h-screen">
       <Navbar />
       <Hero />
       <Projects />
       <About />
       <Contact />
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }
